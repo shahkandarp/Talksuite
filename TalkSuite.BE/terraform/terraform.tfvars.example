@@ -1,0 +1,57 @@
+# =============================================================================
+# TalkSuite Terraform Variables
+# =============================================================================
+# Copy this file to terraform.tfvars and fill in your values.
+# NEVER commit terraform.tfvars to version control (it contains secrets).
+# =============================================================================
+
+aws_region   = "us-east-1"
+environment  = "production"
+project_name = "talksuite"
+
+# Networking
+vpc_cidr             = "10.0.0.0/16"
+public_subnet_cidrs  = ["10.0.1.0/24", "10.0.2.0/24"]
+private_subnet_cidrs = ["10.0.10.0/24", "10.0.11.0/24"]
+
+# Database
+db_instance_class        = "db.t3.micro"
+db_name                  = "talksuite"
+db_username              = "talksuite_admin"
+db_password              = "CHANGE_ME_TO_A_STRONG_PASSWORD"
+db_allocated_storage     = 20
+db_max_allocated_storage = 100
+
+# ECS / Fargate
+app_cpu           = 512
+app_memory        = 1024
+app_desired_count = 2
+app_port          = 8000
+app_image_tag     = "latest"
+
+# Bedrock
+bedrock_model_id          = "amazon.nova-pro-v1:0"
+bedrock_knowledge_base_id = "N0YARIQPIR"
+
+# NetSuite MCP (OAuth 2.0 — all stored in SSM Parameter Store)
+# 1. Get Account ID from: NetSuite → Setup → Company → Company Information
+# 2. Get Client ID from: NetSuite → Setup → Integration → Manage Integrations
+# 3. Get Refresh Token by completing the one-time OAuth 2.0 PKCE flow (see docs)
+# 4. MCP URL is auto-built from account ID if left empty
+netsuite_account_id    = ""
+netsuite_client_id     = ""
+netsuite_refresh_token = ""
+netsuite_mcp_url       = ""
+
+# Auto-scaling
+autoscale_min_capacity = 1
+autoscale_max_capacity = 4
+autoscale_cpu_target   = 70
+
+# Domain (optional — leave empty to use ALB DNS directly)
+domain_name     = ""
+certificate_arn = ""
+
+# Frontend (optional — leave empty to use default CloudFront domain)
+frontend_domain_name    = ""
+frontend_certificate_arn = ""

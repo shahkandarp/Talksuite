@@ -1,0 +1,59 @@
+{
+  "family": "talksuite-backend",
+  "networkMode": "awsvpc",
+  "requiresCompatibilities": ["FARGATE"],
+  "cpu": "512",
+  "memory": "1024",
+  "executionRoleArn": "arn:aws:iam::294267536771:role/talksuite-ecs-execution-role",
+  "taskRoleArn": "arn:aws:iam::294267536771:role/talksuite-ecs-task-role",
+  "containerDefinitions": [
+    {
+      "name": "talksuite-backend",
+      "image": "294267536771.dkr.ecr.us-east-1.amazonaws.com/talksuite-backend:latest",
+      "essential": true,
+      "portMappings": [
+        {
+          "containerPort": 8000,
+          "protocol": "tcp"
+        }
+      ],
+      "environment": [
+        { "name": "APP_ENV", "value": "production" },
+        { "name": "DEBUG", "value": "false" },
+        { "name": "AWS_REGION", "value": "us-east-1" },
+        { "name": "BEDROCK_MODEL_ID", "value": "anthropic.claude-3-sonnet-20240229-v1:0" },
+        { "name": "NETSUITE_MCP_URL", "value": "http://localhost:8080" }
+      ],
+      "secrets": [
+        {
+          "name": "DATABASE_URL",
+          "valueFrom": "arn:aws:ssm:us-east-1:294267536771:parameter/talksuite/production/database-url"
+        },
+        {
+          "name": "JWT_SECRET",
+          "valueFrom": "arn:aws:ssm:us-east-1:294267536771:parameter/talksuite/production/jwt-secret"
+        },
+        {
+          "name": "BEDROCK_KNOWLEDGE_BASE_ID",
+          "valueFrom": "arn:aws:ssm:us-east-1:294267536771:parameter/talksuite/production/bedrock-knowledge-base-id"
+        }
+      ],
+      "logConfiguration": {
+        "logDriver": "awslogs",
+        "options": {
+          "awslogs-group": "/ecs/talksuite-backend",
+          "awslogs-region": "us-east-1",
+          "awslogs-stream-prefix": "ecs",
+          "awslogs-create-group": "true"
+        }
+      },
+      "healthCheck": {
+        "command": ["CMD-SHELL", "curl -f http://localhost:8000/health || exit 1"],
+        "interval": 30,
+        "timeout": 5,
+        "retries": 3,
+        "startPeriod": 60
+      }
+    }
+  ]
+}

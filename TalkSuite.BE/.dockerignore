@@ -1,0 +1,10 @@
+.env
+.git
+__pycache__
+*.pyc
+.vscode
+.kiro
+TalkSuite-FE
+node_modules
+.venv
+venv

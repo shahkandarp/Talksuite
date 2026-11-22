@@ -1,0 +1,39 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+env/
+venv/
+.venv/
+
+# Environment
+.env
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# Distribution
+dist/
+build/
+*.egg-info/
+
+# Database
+*.db
+
+# Docker
+pgdata/
+
+# Keys & certificates
+*.pem
+*.key
+
+# OS
+.DS_Store
+Thumbs.db
+frontend
+TalkSuite-FE
